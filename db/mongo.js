@@ -8,12 +8,14 @@ module.exports = (async function () {
       // useNewUrlParser: true,
       // useCreateIndex: true
     };
-    const _connection = await mongooose.connect(
+    mongooose.connect(
       config.get("MONGO_URL"),
       options
-    );
-    console.log(_connection);
-    return _connection;
+    ).then((res) => {
+      console.log("Connected to Mongo: ", res.now());
+    }).catch((error) => {
+      throw error
+    });
   } catch (error) {
     console.log("Error connecting to Mongo: ", error);
   }
