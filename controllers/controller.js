@@ -1,10 +1,10 @@
-const service = require('../services/service');
+const service = require("../services/service");
 
-const search = (req, res) => {
-    const payload = req.body
-    res.send(service.searchForTitle(payload));
+const save = (req, res) => {
+  const payload = req.body;
+  res.send(service.saveTitle(payload));
 };
 
 module.exports = {
-    search,
+  save,
 };
