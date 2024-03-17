@@ -1,8 +1,8 @@
 const saveTitle = (payload) => {
-    const data = {}
-    return data;
+  const data = {};
+  return data;
 };
 
 module.exports = {
-    saveTitle
+  saveTitle,
 };
