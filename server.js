@@ -1,6 +1,6 @@
 const express = require("express");
 const routes = require("./routes/route");
-const _mongo = require("./db/mongo");
+const _mongo = require("./db/mongo.connection");
 
 const app = express();
 const port = 3000;
