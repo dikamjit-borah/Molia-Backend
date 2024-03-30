@@ -1,11 +1,13 @@
+require("dotenv").config({ path: `./${process.env.NODE_ENV}.env` });
+
 const express = require("express");
-const parser = require("body-parser")
+const parser = require("body-parser");
 const routes = require("./routes/route");
 const _mongo = require("./db/mongo.connection");
 
 const app = express();
-app.use(parser.json())
-app.use(parser.urlencoded({ extended: false }))
+app.use(parser.json());
+app.use(parser.urlencoded({ extended: false }));
 const port = 3000;
 
 app.use("/", routes);
