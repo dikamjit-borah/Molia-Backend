@@ -37,4 +37,16 @@ module.exports = {
       throw error;
     }
   },
+
+  findOneAndUpdate: async (collection, query, data) => {
+    try {
+      if (!db) {
+        throw new Error("No db found to perform query");
+      }
+      return await db.collection(collection).findOneAndUpdate(query, data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
 };
