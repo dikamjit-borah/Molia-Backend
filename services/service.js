@@ -19,9 +19,25 @@ const saveTitle = async (data) => {
     );
   } catch (error) {
     console.log(`Error saving title for ${data.user_id}: ${error}`);
+    throw error;
+  }
+};
+
+const fetchTitles = async (data) => {
+  try {
+    const collection = data.entry_type;
+    const user_id = data.user_id;
+    const document = await findOne(collection, { user_id });
+    return document?.titles;
+  } catch (error) {
+    console.log(
+      `Error fetching ${data.entry_type} titles for ${data.user_id}: ${error}`
+    );
+    throw error;
   }
 };
 
 module.exports = {
   saveTitle,
+  fetchTitles,
 };
