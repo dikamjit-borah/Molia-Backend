@@ -1,10 +1,10 @@
 const { insertOne, findOne, findOneAndUpdate } = require("../db/mongo.handler");
 
-const saveTitle = async (payload) => {
+const saveTitle = async (data) => {
   try {
-    const collection = payload.entry_type;
-    const user_id = payload.user_id;
-    const details = payload.details;
+    const collection = data.entry_type;
+    const user_id = data.user_id;
+    const details = data.details;
     const document = await findOne(collection, { user_id });
     if (!document) {
       return await insertOne(collection, { user_id, titles: [details] });
@@ -18,7 +18,7 @@ const saveTitle = async (payload) => {
       { $set: { titles: document.titles } }
     );
   } catch (error) {
-    console.log(`Error saving title for ${payload.user_id}: ${error}`);
+    console.log(`Error saving title for ${data.user_id}: ${error}`);
   }
 };
 
