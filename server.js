@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000;
 
 app.use(require("./middlewares/response.middleware"));
 app.use("/v1", routes);
+app.use(require("./middlewares/error.middleware"));
 
 app.listen(port, () => {
   console.log(os.networkInterfaces());

@@ -8,6 +8,8 @@ module.exports = {
 
   messages: {
     success: "Api success",
-    error: "Something went wrong. Please try again"
-  }
+    failure: "Api failure",
+    error: "Something went wrong. Please try again",
+    not_found: "Data not found",
+  },
 };

@@ -1,5 +1,7 @@
+const NE = require("node-exceptions");
 const { saveTitle, fetchTitles } = require("../services/service");
 const { sendResponse, sendError, createJson } = require("../utils/app.helpers");
+const { messages } = require("../utils/app.constant");
 
 const save = async (req, res) => {
   res.send(await saveTitle(req.body));
@@ -13,9 +15,9 @@ const titles = async (req, res, next) => {
       return res.json(
         createJson(200, `Successfully fetched ${entry_type} titles`, titles)
       );
-    throw new Error("Not found");
+    throw new NE.LogicalException(messages.not_found, 404);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 

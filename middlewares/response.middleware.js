@@ -7,6 +7,7 @@ module.exports = (request, response, next) => {
     response.json = (data) => {
       let newJson = {};
       newJson = {
+        status: data?.status,
         message: data.message || messages.success,
         data: data?.data,
       };
