@@ -11,6 +11,7 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 const port = process.env.PORT || 3000;
 
+app.use(require("./middlewares/response.middleware"));
 app.use("/v1", routes);
 
 app.listen(port, () => {

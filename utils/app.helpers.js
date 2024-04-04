@@ -8,16 +8,12 @@ async function sendError(res, status, message, err) {
   );
 }
 
-async function sendResponse(res, status, message, data) {
-  const response = {
-    status: 500,
-    message: "Something went wrong!",
+function createJson(status, message, data) {
+  return {
+    status,
+    message,
+    data,
   };
-  if (status) response.status = status;
-  if (message) response.message = message;
-  if (data) response["data"] = data;
-
-  return res.status(status ? status : 500).send(response);
 }
 
 function validateWithJoi(schema, payload) {
@@ -26,6 +22,6 @@ function validateWithJoi(schema, payload) {
 
 module.exports = {
   sendError,
-  sendResponse,
+  createJson,
   validateWithJoi,
 };
