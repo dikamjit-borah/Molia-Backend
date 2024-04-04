@@ -13,4 +13,4 @@ module.exports = (async function () {
   } catch (error) {
     console.log("Error connecting to Mongo: ", error);
   }
-})();
+});

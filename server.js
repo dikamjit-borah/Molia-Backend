@@ -4,7 +4,7 @@ const os = require("os");
 const express = require("express");
 const parser = require("body-parser");
 const routes = require("./routes/route");
-const _mongo = require("./db/mongo.connection");
+require("./db/mongo.connection")();
 
 const app = express();
 app.use(parser.json());
