@@ -4,6 +4,7 @@ module.exports = {
     watching: "watching",
     favorites: "favorites",
     wishlist: "wishlist",
+    custom: "custom",
   },
 
   messages: {
