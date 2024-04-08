@@ -13,7 +13,7 @@ module.exports = {
 
   API_GET_FETCH: Joi.object({
     user_id: Joi.string().required(),
-    entry_type: Joi.string()
+    collection: Joi.string()
       .required()
       .valid(...Object.values(collections)),
   }),
