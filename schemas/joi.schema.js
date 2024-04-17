@@ -16,5 +16,6 @@ module.exports = {
     collection: Joi.string()
       .required()
       .valid(...Object.values(collections)),
+    sub_collection: Joi.string(),
   }),
 };

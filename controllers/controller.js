@@ -17,11 +17,10 @@ const save = async (req, res, next) => {
 
 const titles = async (req, res, next) => {
   try {
-    const { user_id, collection } = { ...req.params, ...req.query };
-    const titles = await fetchTitles({ user_id, collection });
+    const titles = await fetchTitles({ ...req.params, ...req.query });
     if (titles && titles.length)
       return res.json(
-        createJson(200, `Successfully fetched ${collection} list`, titles)
+        createJson(200, `Successfully fetched titles`, titles)
       );
     throw new NE.LogicalException(messages.not_found, 404);
   } catch (error) {
