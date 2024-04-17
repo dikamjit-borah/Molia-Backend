@@ -1,4 +1,5 @@
 /* eslint-disable multiline-ternary */
+const NE = require("node-exceptions");
 const { insertOne, findOne, findOneAndUpdate } = require("../db/mongo.handler");
 const { collections } = require("../utils/app.constant");
 
@@ -67,14 +68,29 @@ const saveForCustomList = async (
 
 const fetchTitles = async (data) => {
   try {
-    const collection = data.entry_type;
-    const user_id = data.user_id;
+    const { user_id, collection, sub_collection } = { ...data };
+    if (collection === collections.custom) {
+      return fetchSubCollections(sub_collection, user_id);
+    }
     const document = await findOne(collection, { user_id });
     return document?.titles;
   } catch (error) {
-    console.log(
-      `Error fetching ${data.entry_type} titles for ${data.user_id}: ${error}`
-    );
+    console.log(`Error fetching titles for ${data.user_id}: ${error}`);
+    throw error;
+  }
+};
+
+const fetchSubCollections = async (sub_collection, user_id) => {
+  try {
+    if (!sub_collection)
+      throw new NE.InvalidArgumentException(
+        `Bad Request: sub_collection is not defined`,
+        400
+      );
+    const document = await findOne(sub_collection, { user_id });
+    return document?.titles;
+  } catch (error) {
+    console.log(`Error fetching ${sub_collection} for ${user_id}: ${error}`);
     throw error;
   }
 };
