@@ -11,11 +11,15 @@ module.exports = {
     details: Joi.object(),
   }),
 
-  API_GET_FETCH: Joi.object({
+  API_GET_TITLES: Joi.object({
     user_id: Joi.string().required(),
     collection: Joi.string()
       .required()
       .valid(...Object.values(collections)),
     sub_collection: Joi.string(),
+  }),
+
+  API_GET_SUB_COLLECTION: Joi.object({
+    user_id: Joi.string().required(),
   }),
 };

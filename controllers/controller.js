@@ -1,6 +1,10 @@
 /* eslint-disable nonblock-statement-body-position */
 const NE = require("node-exceptions");
-const { saveTitle, fetchTitles } = require("../services/service");
+const {
+  saveTitle,
+  fetchTitles,
+  fetchSubCollections,
+} = require("../services/service");
 const { createJson } = require("../utils/app.helpers");
 const { messages } = require("../utils/app.constant");
 
@@ -19,8 +23,23 @@ const titles = async (req, res, next) => {
   try {
     const titles = await fetchTitles({ ...req.params, ...req.query });
     if (titles && titles.length)
+      return res.json(createJson(200, `Successfully fetched titles`, titles));
+    throw new NE.LogicalException(messages.not_found, 404);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const sub_collections = async (req, res, next) => {
+  try {
+    const usersSubCollections = await fetchSubCollections(req.params.user_id);
+    if (usersSubCollections && usersSubCollections.length)
       return res.json(
-        createJson(200, `Successfully fetched titles`, titles)
+        createJson(
+          200,
+          `Successfully fetched custom lists`,
+          usersSubCollections
+        )
       );
     throw new NE.LogicalException(messages.not_found, 404);
   } catch (error) {
@@ -31,4 +50,5 @@ const titles = async (req, res, next) => {
 module.exports = {
   save,
   titles,
+  sub_collections,
 };
