@@ -1,6 +1,12 @@
 /* eslint-disable multiline-ternary */
 const NE = require("node-exceptions");
-const { insertOne, findOne, findOneAndUpdate } = require("../db/mongo.handler");
+const {
+  find,
+  findOne,
+  findOneAndUpdate,
+  insertOne,
+  aggregate,
+} = require("../db/mongo.handler");
 const { collections } = require("../utils/app.constant");
 
 const saveTitle = async (data) => {
@@ -70,7 +76,7 @@ const fetchTitles = async (data) => {
   try {
     const { user_id, collection, sub_collection } = { ...data };
     if (collection === collections.custom) {
-      return fetchSubCollections(sub_collection, user_id);
+      return await fetchSubCollectionTitles(sub_collection, user_id);
     }
     const document = await findOne(collection, { user_id });
     return document?.titles;
@@ -80,17 +86,36 @@ const fetchTitles = async (data) => {
   }
 };
 
-const fetchSubCollections = async (sub_collection, user_id) => {
+const fetchSubCollectionTitles = async (sub_collection, user_id) => {
   try {
     if (!sub_collection)
       throw new NE.InvalidArgumentException(
         `Bad Request: sub_collection is not defined`,
         400
       );
-    const document = await findOne(sub_collection, { user_id });
-    return document?.titles;
+    const projection = {};
+    projection[sub_collection] = 1;
+    const document = await find(collections.custom, { user_id }, projection);
+    return document[0][sub_collection]?.titles;
   } catch (error) {
     console.log(`Error fetching ${sub_collection} for ${user_id}: ${error}`);
+    throw error;
+  }
+};
+
+const fetchSubCollections = async (user_id) => {
+  try {
+    // Aggregation pipeline to project only the parent's objects
+    const pipeline = [
+      { $match: { user_id } },
+      { $project: { arrayofkeyvalue: { $objectToArray: "$$ROOT" } } },
+      { $project: { keys: "$arrayofkeyvalue.k" } },
+    ];
+
+    const document = await aggregate("custom", pipeline);
+    return document[0].keys.filter((key) => key !== "_id" && key !== "user_id");
+  } catch (error) {
+    console.log(`Error fetching titles for ${user_id}: ${error}`);
     throw error;
   }
 };
@@ -98,4 +123,5 @@ const fetchSubCollections = async (sub_collection, user_id) => {
 module.exports = {
   saveTitle,
   fetchTitles,
+  fetchSubCollections,
 };
